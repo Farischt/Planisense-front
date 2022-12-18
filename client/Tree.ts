@@ -7,7 +7,7 @@ export class TreeService {
   }
 
   public static async getAreaWithCount(): Promise<AreaWithCount[]> {
-    return await ApiService.get<AreaWithCount[]>(`trees/areas`);
+    return await ApiService.get<AreaWithCount[]>(`trees/areas?paris=false`);
   }
 
   public static async getGenderWithCount(): Promise<GenderWithCount[]> {

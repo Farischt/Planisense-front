@@ -1,55 +1,41 @@
-import { useEffect, useState } from "react";
-import { AreaWithCount } from "../..";
-import { TreeService } from "../../client/Tree";
+import { AreaWithCount, GenderWithCount, GenericData } from "../..";
 
-type Areas = {
-  areas: AreaWithCount[] | null;
-  loading: boolean;
-  error: string | null;
-};
-
-const AreaList: React.FC = () => {
-  const [areas, setAreas] = useState<Areas>({
-    areas: null,
-    loading: false,
-    error: null,
-  });
-
-  const fetchAreas = async () => {
-    setAreas((state) => ({ ...state, loading: true, error: null }));
-    try {
-      const areas = await TreeService.getAreaWithCount();
-      setAreas((state) => ({ ...state, areas, loading: false }));
-    } catch (error: any) {
-      setAreas((state) => ({ ...state, loading: false, error: error.message }));
+const GenericDataList: React.FC<GenericData> = ({
+  title,
+  description,
+  fetch,
+  data,
+  error,
+  loading,
+}) => {
+  const getDataName = (data: AreaWithCount | GenderWithCount): string => {
+    if ("area" in data) {
+      return data.area;
+    } else if ("gender" in data) {
+      return data.gender;
     }
+    return "";
   };
-
-  useEffect(() => {
-    fetchAreas();
-  }, []);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900">Areas</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            A list of all Paris areas with the number of trees in each area.
-          </p>
-          {areas.loading && (
+          <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
+          <p className="mt-2 text-sm text-gray-700">{description}</p>
+          {loading && (
             <p className="mt-2 font-bold animate-pulse text-sm text-blue-700">
               Loading...
             </p>
           )}
-          {areas.error && (
-            <p className="mt-2 font-bold text-sm text-red-700">{areas.error}</p>
+          {error && (
+            <p className="mt-2 font-bold text-sm text-red-700">{error}</p>
           )}
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <button
             type="button"
-            onClick={fetchAreas}
+            onClick={fetch}
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto"
           >
             Refresh data
@@ -57,7 +43,7 @@ const AreaList: React.FC = () => {
         </div>
       </div>
 
-      {areas.areas && (
+      {data && (
         <div className="mt-8 flex flex-col">
           <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -69,7 +55,7 @@ const AreaList: React.FC = () => {
                         scope="col"
                         className="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6"
                       >
-                        Area
+                        {title.slice(0, -1)}
                       </th>
                       <th
                         scope="col"
@@ -80,13 +66,13 @@ const AreaList: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {areas.areas.map((area) => (
-                      <tr key={area.area}>
+                    {data.map((data) => (
+                      <tr key={getDataName(data)}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {area.area}
+                          {getDataName(data)}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {area._count._all}
+                          {data._count._all}
                         </td>
                       </tr>
                     ))}
@@ -101,4 +87,4 @@ const AreaList: React.FC = () => {
   );
 };
 
-export default AreaList;
+export default GenericDataList;

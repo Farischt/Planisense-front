@@ -17,3 +17,24 @@ export type GenderWithCount = {
     _all: number;
   };
 };
+
+export type Areas = {
+  areas: AreaWithCount[] | null;
+  loading: boolean;
+  error: string | null;
+};
+
+export type Genders = {
+  genders: GenderWithCount[] | null;
+  loading: boolean;
+  error: string | null;
+};
+
+export type GenericData = {
+  title: string;
+  description: string;
+  data: AreaWithCount[] | GenderWithCount[] | null;
+  loading: boolean;
+  error: string | null;
+  fetch: () => Promise<void>;
+};
