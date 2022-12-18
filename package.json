@@ -4,7 +4,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "archive": "zip -r submission-front.zip . -x 'node_modules/*' -x submission-front.zip -x '.git/*' -x submission-front.zip -x '.next/*' && open -R submission-front.zip"
   },
   "dependencies": {
     "axios": "^1.2.1",
