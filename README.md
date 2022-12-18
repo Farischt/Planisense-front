@@ -1,3 +1,17 @@
+# Running the app
+
+```bash
+    yarn install
+```
+
+if you change the backend port, make sure to update your `NEXT_PUBLIC_API_URL` [here](./env)
+
+```bash
+    yarn dev
+```
+
+The app will be running [here]("http://localhost:3000/)
+
 # Next.js + Tailwind CSS Example
 
 This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.2)](https://tailwindcss.com/blog/tailwindcss-v3-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
